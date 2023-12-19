@@ -10,7 +10,7 @@
     <div>
         <div class="row">
             <div class="form-group col-md-6">
-                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Crear Idioma</a>
+                <a href="#" id="newLanguage" class="btn btn-primary">Crear Idioma</a>
             </div>    
         </div>
     </div>
@@ -75,7 +75,7 @@
                             {
                                 "data": null,
                                 "render": function(data, type, row, meta) {
-                                    return '<a href="#' + row.id + '" class="btn btn-sm btn-info editLanguage">Editar</a> <a href="#" data-id="'+row.id+'" class="btn btn-sm btn-danger removeLanguage"><i class="far fa-trash-alt"></i></a>';
+                                    return '<a href="#" data-id="'+row.id+'" data-name="'+row.name+'" class="btn btn-sm btn-info editLanguage">Editar</a> <a href="#" data-id="'+row.id+'" class="btn btn-sm btn-danger removeLanguage"><i class="far fa-trash-alt"></i></a>';
                                 },
                                 "targets": -1
                             }
@@ -86,23 +86,29 @@
         }
         fetch();
 
-        $('#movieId').on('select2:select', function (e) {
-            var src1 = $('#movieId :selected').attr('data-image1');
-            var src2 = $('#movieId :selected').attr('data-image2');
-            var name = $('#movieId :selected').text();
-            $("#movieImage1").attr("src", src1);
-            $("#movieImage2").attr("src", src2);
-            $("#movieName").html(name);
-        });    
-
-        $('#addMovie').on('click', function(e) {
+        $('#newLanguage').on('click', function(e) {
             e.preventDefault();
-            let movieId = $('#movieId').val();
-            if(movieId!=""){
+            $("#languageId").val("");
+            $("#name").val("");
+            $("#addModalLabel").text("Nuevo Idioma");
+            $('#addModal').modal('show');
+        });
+
+        $('#addLanguage').on('click', function(e) {
+            e.preventDefault();
+            let name = $('#name').val();
+            if(name!=""){
+                let languageId = $('#languageId').val();
+                let _url = "{{ route('languages.add') }}";
+                let _data = {name:name};
+                if(languageId!=""){
+                    _url = "{{ route('languages.edit') }}";
+                    _data = {name:name, languageId:languageId};
+                }
                 $.ajax({
-                    url:"{{ route('featured.add') }}",
+                    url:_url,
                     method:'post',
-                    data:{movieId:movieId},
+                    data:_data,
                     success:function(res){
                         if(res.status=="error"){
                             Swal.fire({
@@ -113,26 +119,40 @@
                         }    
                         if(res.status=="success"){
                             $('#addModal').modal('hide');
-                            $("#movieId").val("").change();
-                            $("#movieImage1").attr("src", "/images/movie-default.jpg");
-                            $("#movieImage2").attr("src", "/images/movie-default.jpg");
-                            $("#movieName").html("");
-                            $('#dtFeatureds').DataTable().destroy();
+                            $("#name").val("");
+                            $('#dtLanguages').DataTable().destroy();
                             fetch();
                         }
                     },error:function(err){
                         alert(err);
                     }
                 }); 
+            }else{
+                $('#name').focus();
+                Swal.fire({
+                    title: "Oops",
+                    text: "Ingresar el nombre del idioma",
+                    icon: "warning"
+                });
             }
         });
 
-        $('#dtFeatureds').on('click', '.removeMovie', function (e) {
+        $('#dtLanguages').on('click', '.editLanguage', function (e) {
             e.preventDefault();
-            let featuredId = $(this).data('id');
+            let languageId = $(this).data('id');
+            let name = $(this).data('name');
+            $("#languageId").val(languageId);
+            $("#name").val(name);
+            $("#addModalLabel").text("Editar Idioma");
+            $('#addModal').modal('show');
+        });    
+
+        $('#dtLanguages').on('click', '.removeLanguage', function (e) {
+            e.preventDefault();
+            let langaueId = $(this).data('id');
             Swal.fire({
                 title: "Atención",
-                text: "Deseas quitar la película?",
+                text: "Deseas eliminar el idioma?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -141,12 +161,12 @@
                 }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url:"{{ route('featured.remove') }}",
+                        url:"{{ route('languages.remove') }}",
                         method:'post',
-                        data:{featuredId:featuredId},
+                        data:{languageId:langaueId},
                         success:function(res){
                             if(res.status=="success"){
-                                $('#dtFeatureds').DataTable().destroy();
+                                $('#dtLanguages').DataTable().destroy();
                                 fetch();
                             }
                         },error:function(err){

@@ -36,11 +36,7 @@
 @stop
 
 @section('css')
-<style>
-label:not(.form-check-label):not(.custom-file-label) {
-  font-weight: 500;
-}
-</style>    
+<link rel="stylesheet" href="/vendor/admin/main.css">
 @stop
 
 @section('js')

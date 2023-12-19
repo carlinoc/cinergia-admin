@@ -26,6 +26,54 @@ class LanguageController extends Controller
         }
     }
 
+    public function add(Request $request): JsonResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        try {
+            $language = new Language();
+            $language->name = $request->name;
+            $language->save();
+
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to save the Language.'], 500);
+        }
+    }
+
+    public function edit(Request $request): JsonResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        try {
+            $affected = Language::where('id', $request->languageId)
+                ->update(['name' => $request->name]);
+
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to edit the Language.'], 500);
+        }
+    }
+
+    public function remove(Request $request): JsonResponse
+    {
+        try {
+            $request->validate([
+                'languageId' => 'required',
+            ]);
+
+            Language::findOrFail($request->languageId)->delete();
+
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -53,10 +101,7 @@ class LanguageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Language $language)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.

@@ -80,6 +80,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/languages', [LanguageController::class, 'index'])->name('languages.index');
     
     Route::get('/languages/list', [LanguageController::class, 'list'])->name('languages.list');
+
+    Route::post('/languages/add', [LanguageController::class, 'add'])->name('languages.add');
+
+    Route::post('/languages/edit', [LanguageController::class, 'edit'])->name('languages.edit');
+
+    Route::post('/languages/remove', [LanguageController::class, 'remove'])->name('languages.remove');
 });
 
 require __DIR__.'/auth.php';
