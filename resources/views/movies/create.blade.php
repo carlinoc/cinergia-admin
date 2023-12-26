@@ -158,33 +158,44 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="urlId">Url</label>
+                            <label for="urlId">Movie ID (Muse.ai)</label>
                             <input type="text" class="form-control" id="urlId" name="urlId">
                         </div>            
                     </div>
                 </div>
-                <div class="row" style="padding-top: 30px;">
+                <div class="row" style="padding-top: 20px;">
                     <h5>Imágenes</h5>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="name">250x300</label>
+                            <label for="name">780 x 439</label>
                             <input class="form-control" name="image1" type="file" id="image1">
                         </div>            
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="name">450x680</label>
+                            <label for="name">1280 x 720</label>
                             <input class="form-control" name="image2" type="file" id="image2">
                         </div>            
                     </div>
-                    <div class="col-sm-4">
+                </div>
+                <div class="row" style="padding-top: 10px; background-color:#7fffd4">
+                    <h5>Poster</h5>
+                </div>
+                <div class="row" style="background-color:#7fffd4">
+                    <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="name">1080x920</label>
-                            <input class="form-control" name="image3" type="file" id="image3">
-                        </div>        
-                    </div>                
+                            <label for="name">342 x 513</label>
+                            <input class="form-control" name="poster1" type="file" id="poster1">
+                        </div>            
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">500 x 750</label>
+                            <input class="form-control" name="poster2" type="file" id="poster2">
+                        </div>            
+                    </div>
                 </div>
                 <div class="row" style="padding-top: 30px;">
                     <h5>SubTitulos</h5>

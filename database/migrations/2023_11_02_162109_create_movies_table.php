@@ -30,7 +30,8 @@ return new class extends Migration
             $table->string('urlId')->nullable();
             $table->string('image1', 500)->nullable();
             $table->string('image2', 500)->nullable();
-            $table->string('image3', 500)->nullable();
+            $table->string('poster1', 500)->nullable();
+            $table->string('poster2', 500)->nullable();
             $table->timestamps();
         });
     }

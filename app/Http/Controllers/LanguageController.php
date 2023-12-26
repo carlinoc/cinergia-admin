@@ -11,8 +11,6 @@ class LanguageController extends Controller
 {
     public function index(): View
     {
-        //$languages = Language::all();
-        
         return view('languages.index');
     }
 
@@ -97,11 +95,6 @@ class LanguageController extends Controller
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    
 
     /**
      * Update the specified resource in storage.

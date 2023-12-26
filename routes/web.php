@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgeRateController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
@@ -86,6 +87,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/languages/edit', [LanguageController::class, 'edit'])->name('languages.edit');
 
     Route::post('/languages/remove', [LanguageController::class, 'remove'])->name('languages.remove');
+
+    Route::get('/agerates', [AgeRateController::class, 'index'])->name('agerates.index');
+    
+    Route::get('/agerates/list', [AgeRateController::class, 'list'])->name('agerates.list');
+
+    Route::post('/agerates/add', [AgeRateController::class, 'add'])->name('agerates.add');
+
+    Route::post('/agerates/edit', [AgeRateController::class, 'edit'])->name('agerates.edit');
+
+    Route::post('/agerates/remove', [AgeRateController::class, 'remove'])->name('agerates.remove');
 });
 
 require __DIR__.'/auth.php';

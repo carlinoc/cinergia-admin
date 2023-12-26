@@ -105,11 +105,19 @@ class MovieController extends Controller
             }
         }
 
-        if($request->hasFile('image3')){
-            $filename5 = time() .'-'. $slug . '_3.jpg';
-            $success5 = $request->file('image3')->move($path, $filename5);
+        if($request->hasFile('poster1')){
+            $poster1 = time() .'-'. $slug . '_p1.jpg';
+            $success5 = $request->file('poster1')->move($path, $poster1);
             if($success5){
-                $movie->image3 = $path . $filename5;    
+                $movie->poster1 = $path . $poster1;    
+            }
+        }
+
+        if($request->hasFile('poster2')){
+            $poster2 = time() .'-'. $slug . '_p2.jpg';
+            $success6 = $request->file('poster2')->move($path, $poster2);
+            if($success6){
+                $movie->poster2 = $path . $poster2;    
             }
         }
 
@@ -218,14 +226,25 @@ class MovieController extends Controller
             }
         }
 
-        if($request->hasFile('image3')){
-            if(!is_null($movie->image3)){
-                $deleteImage = File::delete($movie->image3);
+        if($request->hasFile('poster1')){
+            if(!is_null($movie->poster1)){
+                File::delete($movie->poster1);
             }
-            $filename3 = time() .'-'. $slug . '_3.jpg';
-            $success3 = $request->file('image3')->move($path, $filename3);
+            $poster1 = time() .'-'. $slug . '_p1.jpg';
+            $success3 = $request->file('poster1')->move($path, $poster1);
             if($success3){
-                $movie->image3 = $path . $filename3;    
+                $movie->poster1 = $path . $poster1;    
+            }
+        }
+
+        if($request->hasFile('poster2')){
+            if(!is_null($movie->poster2)){
+                File::delete($movie->poster2);
+            }
+            $poster2 = time() .'-'. $slug . '_p2.jpg';
+            $success4 = $request->file('poster2')->move($path, $poster2);
+            if($success4){
+                $movie->poster2 = $path . $poster2;    
             }
         }
 
