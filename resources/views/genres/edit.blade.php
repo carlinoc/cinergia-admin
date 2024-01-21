@@ -29,6 +29,10 @@
                             <label for="slug">Slug</label>
                             <input type="text" class="form-control" id="slug" value="{{$genre->slug}}" disabled name="slug">
                         </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="description"><i class="fas fa-check"></i> Descripción</label>
+                            <textarea class="form-control" rows="3" id="description" name="description" required placeholder="Breve descripción">{{$genre->description}}</textarea>
+                        </div>
                     </div>    
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>

@@ -28,6 +28,10 @@
                             <label for="slug">Slug</label>
                             <input type="text" class="form-control" id="slug" disabled name="slug">
                         </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="description"><i class="fas fa-check"></i> Descripción</label>
+                            <textarea class="form-control" rows="3" id="description" name="description" placeholder="Breve descripción"></textarea>
+                        </div>
                     </div>    
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -39,11 +43,7 @@
 @stop
 
 @section('css')
-<style>
-label:not(.form-check-label):not(.custom-file-label) {
-  font-weight: 500;
-}
-</style>    
+<link rel="stylesheet" href="/vendor/admin/main.css">
 @stop
 
 @section('js')
@@ -54,6 +54,6 @@ label:not(.form-check-label):not(.custom-file-label) {
             var slug = slugify($(this).val());
             $("#slug").val(slug);        
         });        
-    });    
+    });
 </script>    
 @stop

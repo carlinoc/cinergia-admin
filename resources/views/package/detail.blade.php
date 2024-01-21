@@ -38,7 +38,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label" for="description">Background</label>
+                                        <label class="col-form-label" for="description">Background (1280 x 720)</label>
                                         <img id="packageBackground" src="/{{$package->background}}" class="img-fluid" />
                                     </div>        
                                 </div>
