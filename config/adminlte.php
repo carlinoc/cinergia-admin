@@ -304,13 +304,8 @@ return [
             'icon' => 'fas fa-fw fa-film',
         ],
         [
-            'text' => 'Destacados',
-            'url'  => '/featured',
-            'icon' => 'fas fa-fw fa-bolt',
-        ],
-        [
-            'text' => 'Cortos Gratis',
-            'url'  => '/freeshort',
+            'text' => 'Secciones del Home',
+            'url'  => '/homesection',
             'icon' => 'fas fa-fw fa-video',
         ],
         [
@@ -343,6 +338,11 @@ return [
             'url'  => '/languages',
             'icon' => 'fas fa-fw fa-language',
         ],
+        [
+            'text' => 'Tipos de Secciones',
+            'url'  => '/sections',
+            'icon' => 'fas fa-fw fa-bolt',
+        ]
     ],
 
     /*

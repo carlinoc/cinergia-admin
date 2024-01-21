@@ -8,9 +8,11 @@ use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\FeaturedController;
 use App\Http\Controllers\FreeShortController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\HomeSectionController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\SectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +99,34 @@ Route::middleware('auth')->group(function () {
     Route::post('/agerates/edit', [AgeRateController::class, 'edit'])->name('agerates.edit');
 
     Route::post('/agerates/remove', [AgeRateController::class, 'remove'])->name('agerates.remove');
+
+    Route::get('/sections', [SectionController::class, 'index'])->name('sections.index');
+    
+    Route::get('/sections/list', [SectionController::class, 'list'])->name('sections.list');
+
+    Route::post('/sections/add', [SectionController::class, 'add'])->name('sections.add');
+
+    Route::post('/sections/edit', [SectionController::class, 'edit'])->name('sections.edit');
+
+    Route::post('/sections/remove', [SectionController::class, 'remove'])->name('sections.remove');
+
+    Route::get('/homesection', [HomeSectionController::class, 'index'])->name('homesection.index');
+    
+    Route::get('/homesection/list', [HomeSectionController::class, 'list'])->name('homesection.list');
+
+    Route::post('/homesection/add', [HomeSectionController::class, 'add'])->name('homesection.add');
+
+    Route::post('/homesection/remove', [HomeSectionController::class, 'remove'])->name('homesection.remove');
+
+    Route::get('/detailhsection/{id}', [HomeSectionController::class, 'detail'])->name('homesection.detail');
+
+    Route::get('/homesection/movielist', [HomeSectionController::class, 'movielist'])->name('homesection.movielist');
+
+    Route::post('/homesection/addmovie', [HomeSectionController::class, 'addmovie'])->name('homesection.addmovie');
+
+    Route::post('/homesection/removemovie', [HomeSectionController::class, 'removemovie'])->name('homesection.removemovie');
+
+    Route::post('/homesection/edit', [HomeSectionController::class, 'edit'])->name('homesection.edit');
 });
 
 require __DIR__.'/auth.php';
