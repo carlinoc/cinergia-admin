@@ -369,7 +369,6 @@
             e.preventDefault();
 
             let elements = [
-                ['trailer', 'Ingresa el trailer'],
                 ['urlId', 'Ingrese la URL']
             ];
             

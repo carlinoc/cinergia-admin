@@ -342,7 +342,13 @@ return [
             'text' => 'Tipos de Secciones',
             'url'  => '/sections',
             'icon' => 'fas fa-fw fa-bolt',
+        ],
+        [
+            'text' => 'Clientes',
+            'url'  => '/clients',
+            'icon' => 'fas fa-money-check-alt',
         ]
+
     ],
 
     /*

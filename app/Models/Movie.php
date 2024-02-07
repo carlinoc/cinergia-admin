@@ -20,4 +20,8 @@ class Movie extends Model
     public function packages(){
         return $this->belongsToMany('App\Models\Package');
     }
+
+    public function clients(){
+        return $this->belongsToMany('App\Models\Client');
+    }
 }

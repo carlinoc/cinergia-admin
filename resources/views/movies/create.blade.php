@@ -307,7 +307,6 @@
             e.preventDefault();
 
             let elements = [
-                ['trailer', 'Ingresa el trailer'],
                 ['urlId', 'Ingrese la URL'],
                 ['image1', 'Seleccione al menos una imagen']
             ];

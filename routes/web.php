@@ -4,6 +4,7 @@ use App\Http\Controllers\AgeRateController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\FeaturedController;
 use App\Http\Controllers\FreeShortController;
@@ -11,8 +12,10 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HomeSectionController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\MovieRentedController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SectionController;
+use App\Models\MovieRented;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +130,28 @@ Route::middleware('auth')->group(function () {
     Route::post('/homesection/removemovie', [HomeSectionController::class, 'removemovie'])->name('homesection.removemovie');
 
     Route::post('/homesection/edit', [HomeSectionController::class, 'edit'])->name('homesection.edit');
+
+    Route::get('/movierented', [MovieRentedController::class, 'index'])->name('movierented.index');
+    
+    Route::get('/movierented/list', [MovieRentedController::class, 'list'])->name('movierented.list');
+
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
+    
+    Route::get('/clients/list', [ClientController::class, 'list'])->name('clients.list');
+
+    Route::post('/clients/add', [ClientController::class, 'add'])->name('clients.add');
+
+    Route::post('/clients/edit', [ClientController::class, 'edit'])->name('clients.edit');
+
+    Route::post('/clients/remove', [ClientController::class, 'remove'])->name('clients.remove');
+
+    Route::get('/client-detail/{clientId}', [ClientController::class, 'detail'])->name('clients.detail');
+
+    Route::post('/clients/addmovie', [ClientController::class, 'addmovie'])->name('clients.addmovie');
+
+    Route::get('/clients/movielist', [ClientController::class, 'movielist'])->name('clients.movielist');
+
+    Route::post('/clients/removemovie', [ClientController::class, 'removemovie'])->name('clients.removemovie');
 });
 
 require __DIR__.'/auth.php';
