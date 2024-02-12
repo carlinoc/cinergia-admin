@@ -132,6 +132,7 @@ class MovieController extends Controller
         $movie->whySee = $request->whySee;
         $movie->movieLength = $request->movieLength;
         $movie->price = $request->price;
+        $movie->payment_type = $request->payment_type;
         $movie->trailer = $request->trailer;
         $movie->urlId = $request->urlId;
         $movie->releaseYear = $releaseYear;
@@ -282,6 +283,7 @@ class MovieController extends Controller
         $movie->whySee = $request->whySee;
         $movie->movieLength = $request->movieLength;
         $movie->price = $request->price;
+        $movie->payment_type = $request->payment_type;
         $movie->trailer = $request->trailer;
         $movie->urlId = $request->urlId;
         $movie->releaseYear = $releaseYear;

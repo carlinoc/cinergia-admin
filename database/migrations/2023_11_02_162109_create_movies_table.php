@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('rating')->default(0);
             $table->dateTime('releaseYear')->nullable();
             $table->decimal('price', $precision=8, $escala=2)->default(0)->nullable(false);
+            $table->string('payment_type', 2)->nullable();
             $table->string('trailer')->nullable();
             $table->string('urlId')->nullable();
             $table->string('image1', 500)->nullable();

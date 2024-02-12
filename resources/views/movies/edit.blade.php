@@ -158,10 +158,24 @@
                         </div>                
                     </div>    
                     <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="price">Precio (S/)</label>
-                            <input type="text" class="form-control" id="price" name="price" value="{{$movie->price}}" placeholder="0.00">
-                         </div>    
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Tipo de pago:</label>
+                                    <select class="form-control" name="payment_type" id="payment_type">
+                                        <option value="">Ninguno</option>
+                                        <option value="DO" @selected("DO"==$movie->payment_type)>Donación</option>
+                                        <option value="PT" @selected("PT"==$movie->payment_type)>Pago Total</option>
+                                    </select>
+                                </div>    
+                            </div>
+                            <div class="col-sm-6 align-self-center">
+                                <div class="form-group">
+                                    <label for="price">Precio (S/)</label>
+                                    <input type="text" class="form-control" id="price" name="price" value="{{$movie->price}}" placeholder="0.00">
+                                </div>            
+                            </div>                    
+                        </div>
                     </div>        
                 </div>
                 
@@ -332,7 +346,14 @@
         $("#name").keyup(function() {
             let _text = $(this).val();
             $("#slug").val(slugify(_text));      
-        });       
+        });
+        
+        $("#payment_type").on("change", function() {
+            let paymentType = $("#payment_type").val();
+            if(paymentType==""){
+                $("#price").val("0.00");        
+            }
+        });
 
         $('#next1').on('click', function(e) {
             e.preventDefault();
@@ -350,6 +371,19 @@
 
         $('#next2').on('click', function(e) {
             e.preventDefault();
+
+            let paymentType = $("#payment_type").val();
+            if(paymentType!=""){
+                let price = parseFloat($("#price").val()); 
+                if(price==0){
+                    Swal.fire({
+                        title: "Oops",
+                        text: "Ingresar la cantidad del precio",
+                        icon: "warning"
+                    });
+                    return;
+                }
+            }
 
             let elements = [
                 ['movieLength', 'Ingresa la duración de la película'],
