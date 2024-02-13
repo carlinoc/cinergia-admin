@@ -73,6 +73,7 @@
                                             <th>Id</th>
                                             <th>Película</th>
                                             <th>Nro Pago</th>
+                                            <th>Tipo Pago</th>
                                             <th>Precio</th>
                                             <th>Fecha Inicio</th>
                                             <th>Fecha Fin</th>
@@ -133,6 +134,12 @@ label:not(.form-check-label):not(.custom-file-label) {
                                 "data": "transactionId",
                                 "render": function(data, type, row, meta) {
                                     return row.transactionId;
+                                }
+                            },
+                            {
+                                "data": "payment_type",
+                                "render": function(data, type, row, meta) {
+                                    return row.payment_type;
                                 }
                             },
                             {

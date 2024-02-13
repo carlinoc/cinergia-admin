@@ -118,7 +118,7 @@ class ClientController extends Controller
     {
         if ($request->ajax()) {
 
-            $movies = Movie::select('movies.id', 'movies.name', 'movies.slug', 'client_movie.transactionId', 'client_movie.amount', 'client_movie.date_start', 'client_movie.date_end')
+            $movies = Movie::select('movies.id', 'movies.name', 'movies.slug', 'movies.payment_type', 'client_movie.transactionId', 'client_movie.amount', 'client_movie.date_start', 'client_movie.date_end')
                 ->join('client_movie', 'client_movie.movie_id', '=', 'movies.id')
                 ->where('client_movie.client_id', $request->clientId)
                 ->get();
