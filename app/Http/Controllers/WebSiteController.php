@@ -83,41 +83,36 @@ class WebSiteController extends Controller
         $slug = Str::slug($request->title);
         $path = 'files/websites/';
 
-        $row = WebSite::where('slug', $slug)->get();
-        if($row->count() == 0) {
-            $website = WebSite::where('id', $request->websiteId)->first();
-            $background = $website->background;
-            $logo = $website->logo;
-            
-            if(!is_null($background) && $request->hasFile('background')){
-                File::delete($background);
-            }
-            if($request->hasFile('background')){
-                $filename = time() .'-'. $slug . '-b.jpg';
-                $success = $request->file('background')->move($path, $filename);
-                if($success) {
-                    $background = $path . $filename;   
-                }
-            }
-
-            if(!is_null($logo) && $request->hasFile('logo')){
-                File::delete($logo);
-            }
-            if($request->hasFile('logo')){
-                $filename1 = time() .'-'. $slug . '-l.png';
-                $success1 = $request->file('logo')->move($path, $filename1);
-                if($success1) {
-                    $logo = $path . $filename1;   
-                }
-            }
-
-            WebSite::where('id', $request->websiteId)
-                ->update(['title' => $request->title, 'slug' => $slug, 'description' => $request->description, 'background' => $background, 'logo' => $logo, 'color1' => $request->color1, 'color2' => $request->color2, 'color3' => $request->color3, 'color4' => $request->color4]);
-
-            return response()->json(['status'=>'success', 'message'=>'La web fue actualizada']);
-        }else{
-            return response()->json(['status'=>'error', 'message'=>'El Slug ya existe']);
+        $website = WebSite::where('id', $request->websiteId)->first();
+        $background = $website->background;
+        $logo = $website->logo;
+        
+        if(!is_null($background) && $request->hasFile('background')){
+            File::delete($background);
         }
+        if($request->hasFile('background')){
+            $filename = time() .'-'. $slug . '-b.jpg';
+            $success = $request->file('background')->move($path, $filename);
+            if($success) {
+                $background = $path . $filename;   
+            }
+        }
+
+        if(!is_null($logo) && $request->hasFile('logo')){
+            File::delete($logo);
+        }
+        if($request->hasFile('logo')){
+            $filename1 = time() .'-'. $slug . '-l.png';
+            $success1 = $request->file('logo')->move($path, $filename1);
+            if($success1) {
+                $logo = $path . $filename1;   
+            }
+        }
+
+        WebSite::where('id', $request->websiteId)
+            ->update(['title' => $request->title, 'slug' => $slug, 'description' => $request->description, 'background' => $background, 'logo' => $logo, 'color1' => $request->color1, 'color2' => $request->color2, 'color3' => $request->color3, 'color4' => $request->color4]);
+
+        return response()->json(['status'=>'success', 'message'=>'La web fue actualizada']);
     }
 
     public function remove(Request $request): JsonResponse
