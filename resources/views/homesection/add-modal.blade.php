@@ -12,6 +12,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="for-group">
+                        <x-adminlte-select2 name="websiteId" label="Web" data-placeholder="Seleccione">
+                             <option value=""></option>
+                             @foreach($websites as $website)
+                                 <option value="{{$website->id}}">{{$website->title}}</option>
+                             @endforeach
+                        </x-adminlte-select2>
+                    </div>
+                    <div class="for-group">
                        <x-adminlte-select2 name="sectionId" label="Tipo" data-placeholder="Seleccione">
                             <option value=""></option>
                             @foreach($sections as $section)

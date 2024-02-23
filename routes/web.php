@@ -15,6 +15,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MovieRentedController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\WebSiteController;
 use App\Models\MovieRented;
 
 /*
@@ -152,6 +153,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/clients/movielist', [ClientController::class, 'movielist'])->name('clients.movielist');
 
     Route::post('/clients/removemovie', [ClientController::class, 'removemovie'])->name('clients.removemovie');
+
+    Route::get('/websites', [WebSiteController::class, 'index'])->name('websites.index');
+
+    Route::get('/websites/list', [WebSiteController::class, 'list'])->name('websites.list');
+
+    Route::post('/websites/add', [WebSiteController::class, 'add'])->name('websites.add');
+
+    Route::post('/websites/edit', [WebSiteController::class, 'edit'])->name('websites.edit');
+
+    Route::post('/websites/remove', [WebSiteController::class, 'remove'])->name('websites.remove');
 });
 
 require __DIR__.'/auth.php';

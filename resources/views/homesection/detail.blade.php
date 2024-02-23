@@ -21,6 +21,18 @@
                     <form action="" method="POST" id="frmEditHSection">
                         <input type="hidden" id="hsectionId" name="hsectionId" value="{{$hsection->id}}">
                         <div class="card-body">
+                            <div class="for-group">
+                                <x-adminlte-select2 name="websiteId" label="Web" data-placeholder="Seleccione">
+                                     <option value=""></option>
+                                     @foreach($websites as $website)
+                                        @if ($website->id==$hsection->websiteId)
+                                            <option selected value="{{$website->id}}">{{$website->title}}</option>
+                                        @else
+                                            <option value="{{$website->id}}">{{$website->title}}</option>
+                                        @endif
+                                     @endforeach
+                                </x-adminlte-select2>
+                            </div>
                             <div class="form-group">
                                 <x-adminlte-select2 name="sectionId" label="Tipo" data-placeholder="Seleccione">
                                     <option value=""></option>

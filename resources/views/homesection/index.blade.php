@@ -22,6 +22,7 @@
                     <thead>
                         <tr>
                             <th>Id</th>
+                            <th>Web</th>
                             <th>Seccion</th>
                             <th>Titulo</th>
                             <th>Peliculas</th>
@@ -70,6 +71,12 @@
                                 }
                             },
                             {
+                                "data": "web",
+                                "render": function(data, type, row, meta) {
+                                    return row.web;
+                                }
+                            },
+                            {
                                 "data": "sectionName",
                                 "render": function(data, type, row, meta) {
                                     return row.sectionName;
@@ -103,6 +110,7 @@
 
         $('#newHSection').on('click', function(e) {
             e.preventDefault();
+            $("#websiteId").val("").change();
             $("#sectionId").val("").change();
             $("#title").val("");
             $("#addModalLabel").text("Nueva Sección del Home");
@@ -112,13 +120,15 @@
         $('#addHSection').on('click', function(e) {
             e.preventDefault();
             let elements = [
+                ['websiteId', 'Seleccione la web'],
                 ['sectionId', 'Seleccione la sección']
             ];
 
             if(emptyfy(elements)){
+                let websiteId = $('#websiteId').val();
                 let sectionId = $('#sectionId').val();
                 let title = $('#title').val();
-                let data = {title:title, sectionId:sectionId};
+                let data = {title:title, sectionId:sectionId, websiteId:websiteId};
                 $.ajax({
                     url:"{{ route('homesection.add') }}",
                     method:'post',

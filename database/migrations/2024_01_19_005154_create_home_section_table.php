@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('home_section', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sectionId')->constrained('sections')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('websiteId')->constrained('websites')->onUpdate('cascade')->onDelete('restrict');
             $table->string('title')->nullable();
             $table->string('background', 500)->nullable();
             $table->timestamps();

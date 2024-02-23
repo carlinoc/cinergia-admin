@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
 use App\Models\Movie;
+use App\Models\WebSite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File; 
 
@@ -19,18 +20,20 @@ class HomeSectionController extends Controller
     public function index(): View
     {
         $sections= Section::all();
+        $websites= WebSite::all();
 
-        return view('homesection.index', ['sections' => $sections]);
+        return view('homesection.index', ['sections' => $sections, 'websites' => $websites]);
     }
 
     public function list(Request $request): JsonResponse
     {
         if ($request->ajax()) {
 
-            $hsections = HomeSection::select('home_section.id', 'home_section.title', 'sections.name as sectionName', DB::raw('count(home_section_movie.home_section_id) as movies'))
+            $hsections = HomeSection::select('home_section.id', 'home_section.title', 'websites.title as web', 'sections.name as sectionName', DB::raw('count(home_section_movie.home_section_id) as movies'))
+            ->Join('websites','websites.id','=','home_section.websiteId')
             ->Join('sections','sections.id','=','home_section.sectionId')
             ->leftJoin('home_section_movie','home_section_movie.home_section_id','=','home_section.id')
-            ->groupBy('home_section.id', 'home_section.title', 'sections.name')
+            ->groupBy('home_section.id', 'home_section.title', 'websites.title', 'sections.name')
             ->get();
 
             return response()->json(['hsections' => $hsections]);
@@ -42,15 +45,17 @@ class HomeSectionController extends Controller
     public function add(Request $request): JsonResponse
     {
         $request->validate([
+            'websiteId' => 'required',
             'sectionId' => 'required'
         ]);
 
         try {
-            $rows = HomeSection::where('sectionId', $request->sectionId)->count();
+            $rows = HomeSection::where('sectionId', $request->sectionId)->where('websiteId', $request->websiteId)->count();
             if($rows > 0) {
-                return response()->json(['status'=>'error', 'message'=>'Ya existe una sección con ese tipo']);    
+                return response()->json(['status'=>'error', 'message'=>'Ya existe una sección para esa web']);    
             }else{
                 $hsection = new HomeSection();
+                $hsection->websiteId = $request->websiteId;
                 $hsection->sectionId = $request->sectionId;
                 $hsection->title = $request->title;
                 $hsection->save();
@@ -58,7 +63,7 @@ class HomeSectionController extends Controller
                 return response()->json(['status' => 'success']);    
             }
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to save the Language.'], 500);
+            return response()->json(['error' => 'Failed to save the Section.'], 500);
         }
     }
 
@@ -82,7 +87,7 @@ class HomeSectionController extends Controller
         }
 
         $affected = HomeSection::where('id', $request->hsectionId)
-            ->update(['sectionId' => $request->sectionId, 'title' => $request->title, 'background' => $background]);
+            ->update(['websiteId' => $request->websiteId, 'sectionId' => $request->sectionId, 'title' => $request->title, 'background' => $background]);
 
         return response()->json(['status'=>'success', 'message'=>'La sección fue actualizada', 'background'=> $background]);
     }
@@ -112,14 +117,15 @@ class HomeSectionController extends Controller
     public function detail(Request $request): View
     {
         $sections= Section::all();
+        $websites= WebSite::all();
 
         $movies = Movie::all();
 
-        $hsection = HomeSection::select('home_section.id', 'home_section.sectionId', 'home_section.title', 'home_section.background', 'sections.name as sectionName', 'sections.maxMovies')
+        $hsection = HomeSection::select('home_section.id', 'home_section.websiteId', 'home_section.sectionId', 'home_section.title', 'home_section.background', 'sections.name as sectionName', 'sections.maxMovies')
             ->join('sections', 'sections.id', '=', 'home_section.sectionId')
             ->where('home_section.id', $request->id)->first();
 
-        return view('homesection.detail', ['sections' => $sections, 'hsection' => $hsection, 'movies' => $movies]);
+        return view('homesection.detail', ['sections' => $sections, 'websites' => $websites, 'hsection' => $hsection, 'movies' => $movies]);
     }
 
     public function movielist(Request $request): JsonResponse

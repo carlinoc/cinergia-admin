@@ -347,6 +347,11 @@ return [
             'text' => 'Clientes',
             'url'  => '/clients',
             'icon' => 'fas fa-money-check-alt',
+        ],
+        [
+            'text' => 'WebSites',
+            'url'  => '/websites',
+            'icon' => 'fas fa-laptop',
         ]
 
     ],
