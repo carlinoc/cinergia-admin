@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
@@ -54,7 +55,7 @@ class MovieController extends Controller
         $languages = Language::all();
         $agerates = AgeRate::all();
         $genres = Genre::all();
-        $directors = Director::all();
+        $directors = Director::orderBy('firstName')->get();
         $countries = Country::all();
 
         return view('movies.create', ['categories' => $categories, 'languages' => $languages, 'agerates' => $agerates, 'genres' => $genres, 'directors' => $directors, 'countries' => $countries]);
@@ -136,6 +137,7 @@ class MovieController extends Controller
         $movie->description = $request->description;
         $movie->whySee = $request->whySee;
         $movie->movieLength = $request->movieLength;
+        $movie->userId = Auth::id();
         if($request->payment_type==""){
             $movie->price = 0;
             $movie->priceUSD = 0;
@@ -306,6 +308,7 @@ class MovieController extends Controller
         $movie->description = $request->description;
         $movie->whySee = $request->whySee;
         $movie->movieLength = $request->movieLength;
+        $movie->userId = Auth::id();
         if($request->payment_type==""){
             $movie->price = 0;
             $movie->priceUSD = 0;

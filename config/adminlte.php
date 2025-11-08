@@ -352,8 +352,19 @@ return [
             'text' => 'WebSites',
             'url'  => '/websites',
             'icon' => 'fas fa-laptop',
-        ]
-
+        ],
+        [
+            'key' => 'sales_administration',
+            'text'    => 'Administración',
+            'icon'    => 'fas fa-fw fas fa-cog',
+            'submenu' => [
+                [
+                    'text' => 'Usuarios',
+                    'url'  => '/user',
+                    'icon' => 'fas fa-fw fas fa-user',
+                ]
+            ],
+        ],
     ],
 
     /*

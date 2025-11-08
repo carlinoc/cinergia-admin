@@ -16,6 +16,7 @@ use App\Http\Controllers\MovieRentedController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\WebSiteController;
+use App\Http\Controllers\UserController;
 use App\Models\MovieRented;
 
 /*
@@ -167,6 +168,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/director/add', [DirectorController::class, 'add'])->name('director.add');
 
     Route::post('/movies/verifyIdyt', [MovieController::class, 'verifyIdyt'])->name('movies.verifyIdyt');
+
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::get('/user/list', [UserController::class, 'list'])->name('user.list');
+    Route::post('/user/add', [UserController::class, 'add'])->name('user.add');
+    Route::post('/user/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::post('/user/remove', [UserController::class, 'remove'])->name('user.remove');
 });
 
 require __DIR__.'/auth.php';

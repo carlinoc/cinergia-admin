@@ -42,7 +42,6 @@
         <div class="bs-stepper-content">
           <form id="frmNewMovie" action="{{route('movies.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
-            <input type="hidden" id="userId" name="userId" value="{{Auth::id()}}">
             <div id="test-l-1" role="tabpanel" class="bs-stepper-pane active dstepper-block" aria-labelledby="stepper1trigger1">
                 <div class="row">
                     <div class="col-sm-3">
@@ -444,14 +443,7 @@
                         (async () => {
                             const data = await fetchYouTubeVideoDetails(YTUrlId);
                             const duration = data.items[0].contentDetails.duration;
-                            const parts = duration.match(/\d+/g);
-                            let minutes = 0;
-                            if(parts.length==2){
-                                minutes = parseInt(parts[0]);
-                            }
-                            if(parts.length==3){
-                                minutes = parseInt(parts[0] * 60) + parseInt(parts[1]);
-                            }
+                            let minutes = youtubeDurationToMinutes(duration);
                             const publishedAt = data.items[0].snippet.publishedAt;
                             const releaseDate = getFormattedDate(new Date(publishedAt));
 

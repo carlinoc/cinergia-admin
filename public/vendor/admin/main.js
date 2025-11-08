@@ -58,3 +58,51 @@ async function fetchYouTubeVideoDetails(videoId) {
 function isNotNaNGlobal(value) {
   return !isNaN(value);
 }
+
+function youtubeDurationToMinutes(duration) {
+  // Expresión regular para extraer horas, minutos y segundos
+  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+
+  if (!match) return 0;
+
+  const hours = parseInt(match[1] || "0", 10);
+  const minutes = parseInt(match[2] || "0", 10);
+  const seconds = parseInt(match[3] || "0", 10);
+
+  // Convertir todo a minutos
+  const totalMinutes = hours * 60 + minutes + seconds / 60;
+
+  // Redondear al número entero más cercano
+  return Math.round(totalMinutes);
+}
+
+function showErrorMsg(message){
+  Swal.fire({
+      title: "Atención",
+      html: message,
+      icon: "error",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Aceptar"
+  });
+}
+
+function showSuccessMsg(message){
+  Swal.fire({
+      title: "Muy bien",
+      html: message,
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Aceptar"
+  });
+}
+
+function showAlertMsg(message){
+  Swal.fire({
+      title: "Atención",
+      html: message,
+      icon: "warning",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Aceptar"
+  });
+}
+
