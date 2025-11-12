@@ -5,7 +5,7 @@
 @section('content_header')
     <h1 class="h1title">Listado de Películas</h1>
 @stop
-
+@vite('resources/js/app.js')
 @section('content')
     <div>
         <div class="row">
@@ -22,12 +22,22 @@
                     @foreach($movies as $movie)
                         <tr>
                             <td>{{ $movie->id }}</td>
-                            <td>{{ $movie->name }}</td>
+                            <td style='width:30%'>{{ $movie->name }}</td>
                             <td>{{ $movie->category }}</td>
-                            <td><div style="width:120px;"><img src="{{ $movie->image1 }}" class="img-fluid" /></div></td>
-                            <td class="text-center">{{ $movie->views_count }}</td>
+                            <td>{{ $movie->country->name ?? '—' }}</td>
                             <td>
-                                <a href="/movies/{{$movie->id}}/edit" class="btn btn-sm btn-info">Editar</a>
+                                @foreach ($movie->genres as $genre)
+                                    <span class="badge badge-info">{{ $genre->name }}</span>
+                                @endforeach
+                            </td>
+                            <td><div style="width:120px;"><img src="{{ $movie->image1 }}" class="img-fluid" /></div></td>
+                            <td>
+                                <span class="badge badge-success">
+                                    {{ $movie->views_count }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="/movies/{{$movie->id}}/edit" class="btn btn-sm btn-primary"><i class="far fa-edit"></i></a>
 
                                 <form action="{{route('movies.destroy', $movie)}}" method="post" class="d-inline">
                                     @csrf

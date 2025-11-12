@@ -31,14 +31,17 @@ class MovieController extends Controller
      */
     public function index(): View
     {
-        $movies = Movie::select('movies.id', 'movies.name', 'movies.image1', 'categories.name as category', 'movies.views_count')
-            ->join('categories','categories.id','=','movies.categoryId')
-            ->get();
+        $movies = Movie::with(['genres', 'country'])
+        ->select('movies.id', 'movies.name', 'movies.image1', 'categories.name as category', 'movies.views_count', 'movies.countryId')
+        ->join('categories', 'categories.id', '=', 'movies.categoryId')
+        ->get();
 
         $heads = [
             'ID',
             'Movie',
             'Categoria',
+            'País',
+            'Géneros',
             'Image',
             'Vistas',
             'Opciones'
@@ -95,6 +98,7 @@ class MovieController extends Controller
             }
         }
 
+        $success3 = false;
         if($request->hasFile('image1')){
             $filename3 = time() .'-'. $slug . '_1.jpg';
             $success3 = $request->file('image1')->move($path, $filename3);
@@ -103,6 +107,7 @@ class MovieController extends Controller
             }
         }
 
+        $success4 = false;
         if($request->hasFile('image2')){
             $filename4 = time() .'-'. $slug . '_2.jpg';
             $success4 = $request->file('image2')->move($path, $filename4);
@@ -132,6 +137,7 @@ class MovieController extends Controller
         $movie->languageId = $request->languageId;
         $movie->directorId = $request->directorId;
         $movie->ageRateId = $request->ageRateId;
+        $movie->countryId = $request->countryId;
         $movie->name = $request->name;
         $movie->slug = $slug;
         $movie->description = $request->description;
@@ -149,8 +155,12 @@ class MovieController extends Controller
         $movie->trailer = $request->trailer;
         if($videoSource=="YT"){
             $movie->ytUrlId = $request->YTUrlId;
-            $movie->image1 = $request->ytImage1Src;
-            $movie->image2 = $request->ytImage2Src;
+            if(!$success3){
+                $movie->image1 = $request->ytImage1Src;
+            }
+            if(!$success4){
+                $movie->image2 = $request->ytImage2Src;
+            }
         }else{
             $movie->urlId = $request->urlId;
         }
@@ -230,6 +240,7 @@ class MovieController extends Controller
 
         $movie = Movie::find($movieId);
 
+        $success1 = false;
         if($request->hasFile('image1')){
             if(!is_null($movie->image1)){
                 $deleteImage = File::delete($movie->image1);
@@ -241,6 +252,7 @@ class MovieController extends Controller
             }
         }
 
+        $success2 = false;
         if($request->hasFile('image2')){
             if(!is_null($movie->image2)){
                 $deleteImage = File::delete($movie->image2);
@@ -320,8 +332,12 @@ class MovieController extends Controller
         $movie->trailer = $request->trailer;
         if($videoSource=="YT"){
             $movie->ytUrlId = $request->YTUrlId;
-            $movie->image1 = $request->ytImage1Src;
-            $movie->image2 = $request->ytImage2Src;
+            if(!$success1){
+                $movie->image1 = $request->ytImage1Src;
+            }
+            if(!$success2){
+                $movie->image2 = $request->ytImage2Src;
+            }
         }else{
             $movie->urlId = $request->urlId;
         }
@@ -401,11 +417,11 @@ class MovieController extends Controller
         return "";
     }
 
-    public static function getImage($image, $ytUrlId){
+    public static function getImage($image){
         if(is_null($image)){
-            return "images/movie-default.jpg";
+            return "/images/movie-default.jpg";
         }
-        if($ytUrlId!=""){
+        if(strpos($image, "https:") !== false){
             return $image;
         }
         return "/".$image;

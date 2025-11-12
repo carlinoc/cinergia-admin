@@ -98,7 +98,7 @@
                         <div class="spinner-border text-primary" role="status" id="YTVerifySpinner" >
                             <span class="visually-hidden"></span>
                         </div>
-                        <label class="col-form-label text-danger" id="idAlredyExists" style="display: none"><i class="fa fa-exclamation-triangle"></i> El video ya existe en nuestra base de datos</label>
+                        <label class="col-form-label text-danger" id="YTErrorMsg" style="display: none"><i class="fa fa-exclamation-triangle"></i> Message</label>
                     </div>
                 </div>
                 <div class="row">
@@ -179,6 +179,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6" style="padding: 0 0 0 0;!important;">
+                                {{-- Agregar nuevo director --}}
                                 <button type="button"
                                         class="btn btn-outline-primary custom-button"
                                         id="btnAddDirector"
@@ -310,6 +311,7 @@
     </div>
 </div>
 @include('movies.adddirector-modal')
+
 @stop
 
 @section('css')
@@ -322,13 +324,14 @@
         }
         .custom-button {
             width: 50px; /* Set a specific width */
-            height: 36px; /* Set a specific height */
+            height: 34px; /* Set a specific height */
             font-size: 18px; /* Adjust font size */
         }
     </style>
 @stop
 
 @section('js')
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="/vendor/datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
     <script src="/vendor/admin/main.js"></script>
@@ -343,10 +346,29 @@
         });
 
         $("#btnAddDirector").on('click', function() {
-            $('#addModal').modal('show');
+            // Limpiar los campos
             $("#dName").val("");
             $("#dLastName").val("");
             $("#dCountryId").val("").change();
+
+            // Mostrar el modal
+            $('#addModal').modal('show');
+        });
+
+        // Cuando el modal termine de mostrarse
+        $('#addModal').on('shown.bs.modal', function () {
+            // Si Select2 ya estaba inicializado, lo destruimos para evitar duplicados
+            if ($.fn.select2 && $('#dCountryId').data('select2')) {
+                $('#dCountryId').select2('destroy');
+            }
+
+            // Inicializamos el Select2 dentro del modal
+            $('#dCountryId').select2({
+                dropdownParent: $('#addModal'),
+                width: '100%',
+                theme: 'bootstrap4',
+                placeholder: 'Seleccione un país'
+            });
         });
 
         $("#addDirector").on('click', function(e) {
@@ -419,14 +441,28 @@
             if(YTUrlId==""){
                 Swal.fire({
                     title: "Oops",
-                    text: "Ingresar la código de Youtube",
+                    text: "Ingresar el código de Youtube",
                     icon: "warning"
                 });
                 $("#YTUrlId").focus();
                 return;
             }
-            $("#idAlredyExists").hide();
+            $("#YTErrorMsg").hide();
+            $("#YTErrorMsg").html("");
             $("#YTVerifySpinner").show();
+
+            (async () => {
+                const playableRes = await checkYouTubePlayable(YTUrlId, 4000); // 4s timeout
+
+                if (!playableRes.playable) {
+                    $("#YTErrorMsg").html("<i class='fa fa-exclamation-triangle'></i> "+playableRes.reason);
+                    $("#YTErrorMsg").show();
+                    $("#YTUrlId").focus();
+                    return;
+                }
+
+                $("#YTVerifySpinner").hide();
+            })();
 
             let _url = "{{ route('movies.verifyIdyt') }}";
             let _data = {YTUrlId:YTUrlId};
@@ -437,7 +473,10 @@
                 success:function(res){
                     $("#YTVerifySpinner").hide();
                     if(res.status=="alert"){
-                        $("#idAlredyExists").show();
+                        $("#YTErrorMsg").html("<i class='fa fa-exclamation-triangle'></i> "+res.message);
+                        $("#YTErrorMsg").show();
+                        $("#YTUrlId").focus();
+                        return;
                     }
                     if(res.status=="success"){
                         (async () => {

@@ -269,7 +269,7 @@
                     <div class="col-sm-6">
                         <div class="form-group text-center p-4">
                             @php
-                                $image1 = App\Http\Controllers\MovieController::getImage($movie->image1, $movie->ytUrlId);
+                                $image1 = App\Http\Controllers\MovieController::getImage($movie->image1);
                             @endphp
                             <img src="{{ $image1 }}" class="img-fluid border img-thumbnail" id="ytImage1" />
                             <input type="hidden" id="ytImage1Src" name="ytImage1Src" value="{{ $image1 }}">
@@ -278,10 +278,10 @@
                     <div class="col-sm-6">
                         <div class="form-group text-center p-4">
                             @php
-                                $image2 = App\Http\Controllers\MovieController::getImage($movie->image2, $movie->ytUrlId);
+                                $image2 = App\Http\Controllers\MovieController::getImage($movie->image2);
                             @endphp
                             <img src="{{ $image2 }}" class="img-fluid border img-thumbnail" id="ytImage2" />
-                            <input type="hidden" id="ytImage2Src" name="ytImage2Src" value="{{ $image2 }}">
+                            <input type="hidden" id="ytImage2Src" name="ytImage2Src" value="{{ substr($image2, 1) }}">
                         </div>
                     </div>
                 </div>

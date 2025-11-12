@@ -44,7 +44,7 @@ function getFormattedDate(date) {
 
 async function fetchYouTubeVideoDetails(videoId) {
     const apiKey =  YT_API_KEY;
-    const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet,contentDetails`;
+    const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet,contentDetails,status`;
 
     try {
         const response = await fetch(url);
@@ -104,5 +104,114 @@ function showAlertMsg(message){
       confirmButtonColor: "#3085d6",
       confirmButtonText: "Aceptar"
   });
+}
+
+function checkYouTubePlayable(videoId, timeoutMs = 3000) {
+    return new Promise((resolve) => {
+        const containerId = "yt-player-check";
+        // Crear contenedor temporal (oculto)
+        const tempDiv = document.createElement("div");
+        tempDiv.id = containerId;
+        tempDiv.style.width = "1px";
+        tempDiv.style.height = "1px";
+        tempDiv.style.position = "absolute";
+        tempDiv.style.left = "-9999px";
+        document.body.appendChild(tempDiv);
+
+        let timer = null;
+        let resolved = false;
+        let player = null;
+
+        function cleanUp() {
+            if (timer) {
+                clearTimeout(timer);
+                timer = null;
+            }
+            try {
+                if (player && player.destroy) player.destroy();
+            } catch (e) { /* noop */ }
+            const el = document.getElementById(containerId);
+            if (el) el.remove();
+        }
+
+        function finish(result) {
+            if (resolved) return;
+            resolved = true;
+            cleanUp();
+            resolve(result);
+        }
+
+        function onPlayerError(event) {
+            // Mapear códigos de error
+            let reason = "Error desconocido";
+            switch (event.data) {
+                case 2: reason = "ID de video no válido"; break;
+                case 100: reason = "El video fue eliminado o es privado"; break;
+                case 101:
+                case 150: reason = "El propietario bloqueó la reproducción en sitios externos"; break;
+            }
+            finish({ playable: false, reason });
+        }
+
+        function onPlayerStateChange(event) {
+            // 1 -> PLAYING, 3 -> BUFFERING, 5 -> VIDEO_CUED
+            if (event.data === YT.PlayerState.PLAYING) {
+                finish({ playable: true });
+            }
+            // si recibe error se maneja por onPlayerError
+        }
+
+        function attemptPlay() {
+            try {
+                // Intentar reproducir. Si autoplay está bloqueado, puede que no pase a PLAYING.
+                player.playVideo();
+            } catch (e) {
+                // Si falla la llamada, consideramos no reproducible
+                finish({ playable: false, reason: "No se pudo iniciar la reproducción (excepción)." });
+                return;
+            }
+
+            // Si en timeout no hubo PLAYING ni ERROR, consideramos bloqueado
+            timer = setTimeout(() => {
+                // Si no se resolvió aún, lo marcamos como no reproducible
+                if (!resolved) {
+                    finish({
+                        playable: false,
+                        reason: "No se pudo reproducir el video en este sitio (posible bloqueo por derechos o autoplay bloqueado)."
+                    });
+                }
+            }, timeoutMs);
+        }
+
+        function createPlayer() {
+            player = new YT.Player(containerId, {
+                videoId: videoId,
+                playerVars: {
+                    'controls': 1,
+                    'rel': 0,
+                    'playsinline': 1
+                },
+                events: {
+                    onReady: function() {
+                        // Intentar reproducir al estar listo
+                        attemptPlay();
+                    },
+                    onError: onPlayerError,
+                    onStateChange: onPlayerStateChange
+                }
+            });
+        }
+
+        // Si la API ya está disponible
+        if (window.YT && window.YT.Player) {
+            createPlayer();
+        } else {
+            const prev = window.onYouTubeIframeAPIReady;
+            window.onYouTubeIframeAPIReady = function() {
+                if (typeof prev === 'function') prev();
+                createPlayer();
+            };
+        }
+    });
 }
 

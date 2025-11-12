@@ -24,4 +24,9 @@ class Movie extends Model
     public function clients(){
         return $this->belongsToMany('App\Models\Client');
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'countryId');
+    }
 }
