@@ -424,7 +424,7 @@ class MovieController extends Controller
         if(is_null($image)){
             return "/images/movie-default.jpg";
         }
-        if(strpos($image, "https:") !== false){
+        if(strpos($image, "http") !== false){
             return $image;
         }
         return "/".$image;

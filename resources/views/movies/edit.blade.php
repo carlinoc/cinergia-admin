@@ -306,17 +306,17 @@
                     <div class="col-sm-6">
                         <div class="form-group text-center">
                             @php
-                                $poster1 = App\Http\Controllers\MovieController::getImage($movie->poster1, $movie->ytUrlId);
+                                $poster1 = App\Http\Controllers\MovieController::getImage($movie->poster1);
                             @endphp
-                            <img src="/{{ $poster1 }}" style="width: 100px;" class="img-fluid border" />
+                            <img src="{{ $poster1 }}" style="width: 100px;" class="img-fluid border" />
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group text-center">
                             @php
-                                $poster2 = App\Http\Controllers\MovieController::getImage($movie->poster2, $movie->ytUrlId);
+                                $poster2 = App\Http\Controllers\MovieController::getImage($movie->poster2);
                             @endphp
-                            <img src="/{{ $poster2 }}" style="width: 100px;" class="img-fluid border" />
+                            <img src="{{ $poster2 }}" style="width: 100px;" class="img-fluid border" />
                         </div>
                     </div>
                 </div>
