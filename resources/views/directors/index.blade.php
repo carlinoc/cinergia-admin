@@ -11,14 +11,14 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <a href="/directors/create" class="btn btn-primary">Crear Director</a>
-            </div>    
+            </div>
         </div>
     </div>
 
     <div>
         <x-adminlte-card>
             <div class="card-body">
-                <x-adminlte-datatable id="dtdirectors" :heads="$heads" class="hover">
+                <x-adminlte-datatable id="dtdirectors" :heads="$heads" class="hover" :config="['order' => [[1, 'asc']]]">
                     @foreach($directors as $director)
                         <tr>
                             <td>{{ $director->id }}</td>
@@ -64,7 +64,7 @@
                 }).then((result) => {
                 if (result.isConfirmed) {
                     var form = $(this).parent();
-                    $(form).submit();        
+                    $(form).submit();
                 }
             });
         });
@@ -78,6 +78,6 @@
                 confirmButtonText: "Aceptar"
             });
         @endif
-    });    
+    });
 </script>
 @stop

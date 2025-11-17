@@ -222,9 +222,9 @@
                                     <label>Tipo de pago:</label>
                                     <select class="form-control" name="payment_type" id="payment_type">
                                         <option value="">Ninguno</option>
-                                        <option value="PT" @selected("PT"==$movie->payment_type)>Pago Total</option>
+                                        {{-- <option value="PT" @selected("PT"==$movie->payment_type)>Pago Total</option> --}}
                                         <option value="DO" @selected("DO"==$movie->payment_type)>Donación Obligatoria</option>
-                                        <option value="DV" @selected("DV"==$movie->payment_type)>Donación Voluntaria</option>
+                                        {{-- <option value="DV" @selected("DV"==$movie->payment_type)>Donación Voluntaria</option> --}}
                                     </select>
                                 </div>
                             </div>

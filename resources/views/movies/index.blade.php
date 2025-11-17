@@ -18,7 +18,7 @@
     <div>
         <x-adminlte-card>
             <div class="card-body">
-                <x-adminlte-datatable id="dtmovies" :heads="$heads" class="hover">
+                <x-adminlte-datatable id="dtmovies" :heads="$heads" class="hover" :config="['order' => [[0, 'desc']]]">
                     @foreach($movies as $movie)
                         <tr>
                             <td>{{ $movie->id }}</td>

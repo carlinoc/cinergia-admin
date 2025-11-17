@@ -197,9 +197,9 @@
                                     <label>Tipo de pago:</label>
                                     <select class="form-control" name="payment_type" id="payment_type">
                                         <option value="">Ninguno</option>
-                                        <option value="PT">Pago Total</option>
+                                        {{-- <option value="PT">Pago Total</option> --}}
                                         <option value="DO">Donación Obligatoria</option>
-                                        <option value="DV">Donación Voluntaria</option>
+                                        {{-- <option value="DV">Donación Voluntaria</option> --}}
                                     </select>
                                 </div>
                             </div>

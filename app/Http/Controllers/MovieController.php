@@ -12,6 +12,7 @@ use App\Models\Genre;
 use App\Models\Language;
 use App\Models\Movie;
 use App\Models\Country;
+use App\Models\MovieRented;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -34,6 +35,7 @@ class MovieController extends Controller
         $movies = Movie::with(['genres', 'country'])
         ->select('movies.id', 'movies.name', 'movies.image1', 'categories.name as category', 'movies.views_count', 'movies.countryId')
         ->join('categories', 'categories.id', '=', 'movies.categoryId')
+        ->orderBy('movies.id', 'desc')
         ->get();
 
         $heads = [
@@ -377,6 +379,7 @@ class MovieController extends Controller
     {
         FreeShort::where('movieId', $movie->id)->delete();
         Featured::where('movieId', $movie->id)->delete();
+        //MovieRented::where('movieId', $movie->id)->delete();
 
         $path = 'files/movies/'.$movie->slug;
 
